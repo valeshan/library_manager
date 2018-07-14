@@ -1,11 +1,12 @@
 extends layout
 
 block content
-  include includes/book_menus/book_filters
-  include includes/book_menus/book_table
+  include includes/book_templates/book_filters
+  include includes/book_templates/book_table
     each book in books
       tr
-        td=book.title
+        td
+          a(href='book_detail')=book.title
         td=book.author
         td=book.genre
         td=book.first_published

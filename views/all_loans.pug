@@ -5,7 +5,8 @@ block content
   include includes/loan_menus/loan_table
     each loan in loans
       tr
-        td=loan.book_id
+        td
+          a=loan.book_id
         td=loan.patron_id
         td=loan.loaned_on
         td=loan.return_by

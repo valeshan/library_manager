@@ -1,11 +1,11 @@
 extends layout
 
 block content
-  include includes/book_menus/book_filters
-  include includes/book_menus/book_table
+  include includes/book_templates/book_filters
+  include includes/book_templates/book_table
     each loan in loans
       tr
-        td=loan.id
+        td=loan.book_id
         td=loan.id
         td=loan.id
         td=loan.id
