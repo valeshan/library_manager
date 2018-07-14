@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1 New Book
+  form(method='POST' action = '/add_book')
+    p
+      label(for='title') Title
+      input(type='text' name='title' placeholder= '')
+    p
+      label(for='author') Author
+      input(type='text' name='author' placeholder= '')
+    p
+      label(for='genre') Genre
+      input(type='text' name='genre' placeholder= '')
+    p
+      label(for='first_published') First Published
+      input(type='text' name='first_published' placeholder= '')
+    p
+      input(type='submit' value='Create New Book')

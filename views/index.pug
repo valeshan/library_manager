@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1 Library Manager
+  p Welcome to Library Manager
+
+  ul
+    li Books
+      li
+        include includes/book_menus/book_links
+    li Patrons
+      li
+        include includes/patron_menus/patron_links
+    li Loans
+      li
+        include includes/loan_menus/loan_links
