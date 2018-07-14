@@ -10,7 +10,17 @@ module.exports = (sequelize, DataTypes) => {
     loaned_on: DataTypes.DATE,
     return_by: DataTypes.DATE,
     returned_on: DataTypes.DATE,
-  }, {});
+  }, {
+    timestamps: false
+  },{
+    instanceMethods:{
+      overdue: function(){
+        if(this.return_by < date('now')){
+          return this.book_id;
+        }
+      }
+    }
+  });
   loans.associate = function(models) {
     // associations can be defined here
   };

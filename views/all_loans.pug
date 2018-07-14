@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  include includes/loan_menus/loan_filters
+  include includes/loan_menus/loan_table
+    each loan in loans
+      tr
+        td=loan.book_id
+        td=loan.patron_id
+        td=loan.loaned_on
+        td=loan.return_by
+        td=loan.returned_on
+        td
+          a(href='/return_book' class='button') Return Book

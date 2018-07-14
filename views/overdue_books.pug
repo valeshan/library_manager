@@ -2,4 +2,10 @@ extends layout
 
 block content
   include includes/book_menus/book_filters
-  p Overdue books
+  include includes/book_menus/book_table
+    each loan in loans
+      tr
+        td=loan.id
+        td=loan.id
+        td=loan.id
+        td=loan.id
