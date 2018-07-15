@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1=book.title
+  h1='Book: '+book.title
   form(method='POST' action = '/'+book.id)
     p
       label(for='title') Title
@@ -18,6 +18,17 @@ block content
     p
       input(type='submit' value='Update')
 
-  h1 Loan History
+  h2 Loan History
 
   include includes/loan_menus/loan_table
+    each loan in book.Loans
+      tr
+        td
+          a(href='/all_books/'+loan.Book.id)=loan.Book.title
+        td
+          a(href='/all_patrons/'+loan.Patron.id)=loan.Patron.first_name+' '+loan.Patron.last_name
+        td=loan.loaned_on
+        td=loan.return_by
+        td=loan.returned_on
+        td
+          a(href='/return_book' class='button') Return Book

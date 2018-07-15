@@ -19,9 +19,8 @@ router.get('/all_loans', function(req,res,err){
             include:[
               {model: Books},
               {model: Patrons}
-                    ]
-            }
-  ).then(function(loans){
+            ]
+}).then(function(loans){
   res.render('all_loans', {loans:loans})
   })
 });

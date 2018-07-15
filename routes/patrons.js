@@ -19,6 +19,22 @@ router.get('/all_patrons', function(req,res,next){
   })
 });
 
+// GET PATRON DETAIL
+router.get('/all_patrons/:id', function(req, res, next){
+  Patrons.find({
+    include: [
+      {
+        model: Loans,
+          include: [Books, Patrons]
+      }],
+      where:{
+        id: req.params.id
+      }
+  }).then(function(patron){
+      res.render('patron_detail', {patron:patron})
+  })
+});
+
 //POST NEW PATRON
 router.post('/new_patron', function(req, res, next){
   Patrons.create(req.body).then(function(patron){
