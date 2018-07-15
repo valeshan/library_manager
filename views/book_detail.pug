@@ -1,20 +1,20 @@
 extends layout
 
 block content
-  h1=bookDetail.title
-  form(method='POST' action = '/edit_book')
+  h1 #{book.title}
+  form(method='POST' action = '/'+book.id)
     p
       label(for='title') Title
-      input(type='text' name='title' placeholder=bookDetail.title)
+      input(type='text' name='title' value=book.title)
     p
       label(for='author') Author
-      input(type='text' name='author' placeholder=bookDetail.author)
+      input(type='text' name='author' value=book.author)
     p
       label(for='genre') Genre
-      input(type='text' name='genre' placeholder=bookDetail.genre)
+      input(type='text' name='genre' value=book.genre)
     p
       label(for='first_published') First Published
-      input(type='text' name='first_published' placeholder=bookDetail.first_published)
+      input(type='text' name='first_published' value=book.first_published)
     p
       input(type='submit' value='Update')
 

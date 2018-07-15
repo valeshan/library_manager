@@ -71,19 +71,8 @@ router.get('/new_book', function(req, res, next) {
 //GET BOOK DETAIL
 
 router.get('/:id', function(req,res,err){
-  Books.findById(req.params.id).then(function(bookDetail){
-      Loans.findAll({
-        where: {
-          book_id : req.params.id
-            }
-        },{
-        include:[
-          { model: Books},
-          { model: Patrons}
-        ]
-      }).then(function(book){
-        res.render("book_detail", {book: book, loans: loans})
-      })
+  Books.findById(req.params.id).then(function(book){
+        res.render("book_detail", {book: book})
   })
 });
 
