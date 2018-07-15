@@ -1,9 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var loans = sequelize.define('loans', {
+  var Loans = sequelize.define('Loans', {
     id:{
       type: DataTypes.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     book_id: DataTypes.INTEGER,
     patron_id: DataTypes.INTEGER,
@@ -21,8 +22,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
   });
-  loans.associate = function(models) {
+  Loans.associate = function(models) {
     // associations can be defined here
+    Loans.belongsTo(models.Books, {foreignKey: 'book_id'});
+    Loans.belongsTo(models.Patrons, {foreignKey: 'patron_id'})
   };
-  return loans;
+  return Loans;
 };

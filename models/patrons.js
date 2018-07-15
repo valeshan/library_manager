@@ -1,9 +1,10 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var patrons = sequelize.define('patrons', {
+  var Patrons = sequelize.define('Patrons', {
     id:{
       type: DataTypes.INTEGER,
-      primaryKey: true
+      primaryKey: true,
+      autoIncrement: true
     },
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
@@ -14,8 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     timestamps: false
   });
-  patrons.associate = function(models) {
+  Patrons.associate = function(models) {
     // associations can be defined here
+    Patrons.hasMany(models.Loans, {foreignKey: 'patron_id'});
   };
-  return patrons;
+  return Patrons;
 };
