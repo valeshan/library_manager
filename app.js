@@ -13,6 +13,7 @@ var patronsRouter = require('./routes/patrons');
 
 var app = express();
 
+app.locals.moment = require('moment');
 
 // view engine setup
 

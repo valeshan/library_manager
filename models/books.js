@@ -19,6 +19,6 @@ module.exports = (sequelize, DataTypes) => {
   Books.associate = function(models) {
     // associations can be defined here
     Books.hasMany(models.Loans, {foreignKey: 'book_id'})
-  };
+  }
   return Books;
 };

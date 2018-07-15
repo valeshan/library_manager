@@ -35,7 +35,12 @@ router.get('/overdue_loans', function(req, res, next) {
                         [Op.lt]: date
                       },
                 returned_on: null
-  }}).then(function(loans){
+                      }
+                , include:[
+                  { model: Books},
+                  { model: Patrons}
+                ]
+}).then(function(loans){
   res.render('all_loans', {loans:loans});
   })
 });
@@ -52,18 +57,23 @@ router.get('/checked_loans', function(req, res, next) {
                         [Op.eq]: null
                       }
                 }
-              },{
-              include:[
+              , include:[
                 { model: Books},
                 { model: Patrons}
               ]
-            }
-  ).then(function(loans){
+  }).then(function(loans){
   res.render('all_loans', {loans:loans});
   })
 });
 
-
+//ADD NEW LOAN
+router.get('/new_loan', function(req, res, next){
+  Books.findAll().then(function(books){
+    Patrons.findAll().then(function(patrons){
+      res.render('new_loan', {patrons:patrons, books:books});
+    });
+  });
+})
 
 
 module.exports = router;

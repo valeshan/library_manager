@@ -1,0 +1,23 @@
+extends layout
+
+block content
+  h1 New Loan
+  form(method='POST' action = '/add_book')
+    p
+      label(for='book') Book
+      select(id='book')
+        each book in books
+          option=book.title
+    p
+      label(for='patron') Patron
+      select(id='patron')
+        each patron in patrons
+          option=patron.first_name+' '+patron.last_name
+    p
+      label(for='loaned_on') Loaned On:
+      input(type='text' name='loaned_on' value= moment().format('ddd MMMM DD YYYY, h:mm:ss a'))
+    p
+      label(for='return_by') Return By:
+      input(type='text' name='return_by' value= moment().add(7, 'days').format('ddd MMMM DD YYYY, h:mm:ss a'))
+    p
+      input(type='submit' value='Create New Loan')
