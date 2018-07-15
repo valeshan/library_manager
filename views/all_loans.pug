@@ -6,7 +6,7 @@ block content
     each loan in loans
       tr
         td
-          a=loan.Book.title
+          a(href='/'+loan.Book.id)=loan.Book.title
         td
           a=loan.Patron.first_name+' '+loan.Patron.last_name
         td=loan.loaned_on

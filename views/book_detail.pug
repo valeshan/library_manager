@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  h1 #{book.title}
+  h1=book.title
   form(method='POST' action = '/'+book.id)
     p
       label(for='title') Title
