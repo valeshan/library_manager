@@ -68,23 +68,23 @@ router.get('/new_book', function(req, res, next) {
 
 //GET BOOK DETAIL
 
-// router.get('/:id', function(req,res,err){
-//   Books.findById(req.params.id).then(function(book){
-//   //   Loans.findAll({
-//   //     where:{
-//   //       book_id: req.params.id
-//   //     },
-//   //     include:[
-//   //       {model: Patrons},
-//   //       {model: Books}
-//   //     ]
-//   //   })
-//   // }).then(function(loanHistory, book){
-//   //   res.render("book_detail", {book: book, loanHistory: loanHistory})
-//   // })
-//   res.render("book_detail", {book: book})
-//   });
-// })
+router.get('/:id', function(req,res,err){
+  Books.findById(req.params.id).then(function(book){
+  //   Loans.findAll({
+  //     where:{
+  //       book_id: book.id
+  //     },
+  //     include:[
+  //       {model: Patrons},
+  //       {model: Books}
+  //     ]
+  //   })
+  // }).then(function(loanHistory, book){
+  //   res.render("book_detail", {book: book, loanHistory: loanHistory})
+  // })
+  res.render("book_detail", {book: book})
+  });
+})
 
 
 
