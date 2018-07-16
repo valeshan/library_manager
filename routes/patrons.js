@@ -30,9 +30,9 @@ router.get('/all_patrons/:id', function(req, res, next){
       where:{
         id: req.params.id
       }
-  }).then(function(patron){
+    }).then(function(patron){
       res.render('patron_detail', {patron:patron})
-  })
+    })
 });
 
 //POST NEW PATRON

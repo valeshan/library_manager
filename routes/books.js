@@ -67,24 +67,34 @@ router.get('/new_book', function(req, res, next) {
 
 
 //GET BOOK DETAIL
-
-
 router.get('/all_books/:id', function(req, res, next) {
   Books.find({
-    include: [
-    {
-      model: Loans,
-        include: [Patrons, Books]}
-    ],
-    where:
-      {
-        id: req.params.id
-      }
+              include: [
+              {
+                model: Loans,
+                include: [Patrons, Books]}
+              ],
+              where:
+                {id: req.params.id}
   }).then(function(book) {
       res.render('book_detail', { book: book });
   });
 });
 
+
+//RETURN BOOK PAGE
+router.get('/return_book/:id', function(req, res, next) {
+  Loans.find({
+              include:[
+                       {model: Patrons},
+                       {model: Books}
+                     ],
+              where:
+                {book_id: req.params.id}
+  }).then(function(loan) {
+      res.render('return_book', { loan: loan });
+  });
+});
 
 
 module.exports = router;
