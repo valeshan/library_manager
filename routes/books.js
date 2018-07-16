@@ -61,9 +61,27 @@ router.get('/checked_books', function(req, res, next) {
 
 //ADD NEW BOOK
 router.get('/new_book', function(req, res, next) {
-  res.render('new_book');
+  res.render('new_book', {book: Books.build()});
 });
 
+//POST NEW BOOK
+router.post('/', function(req, res,next){
+  Books.create(req.body).then(function(book){
+    res.redirect('/all_books');
+  })
+  // .catch(function(err){
+  //   if(err.name === "SequelizeValidationError"){
+  //       res.render("new_book",
+  //                  {book: Books.build(req.body),
+  //                   errors: err.errors
+  //       });
+  //   } else{
+  //     throw err;
+  //   }
+  // }).catch(function(err){
+  //   res.send(500);
+  // });
+});
 
 
 //GET BOOK DETAIL

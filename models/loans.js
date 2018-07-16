@@ -8,7 +8,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     book_id: DataTypes.INTEGER,
     patron_id: DataTypes.INTEGER,
-    loaned_on: DataTypes.DATE,
+    loaned_on: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'Loaned on date is required'
+        }
+      }},
     return_by: DataTypes.DATE,
     returned_on: DataTypes.DATE,
   }, {
