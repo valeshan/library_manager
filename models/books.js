@@ -28,12 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }},
     first_published: {
-      type: DataTypes.DATE,
-      validate: {
-        notEmpty: {
-          msg: 'Date is required'
-        }
-      }},
+      type: DataTypes.DATEONLY},
   }, {
     timestamps: false
   });
