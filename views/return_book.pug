@@ -2,14 +2,14 @@ extends layout
 
 block content
   h1 Return Book
+  form(method='POST' action='/return_book/'+loan.id)
+    p(value=loan.book_id)='Book Title: '+loan.Book.title
+    p(value=loan.patron_id)='Loaned By: '+loan.Patron.first_name+' '+loan.Patron.last_name
+    p(value=loan.loaned_on)='Loaned On: '+loan.loaned_on
+    p(value=loan.return_by)='Return By: '+loan.return_by
+    p(value=loan.returned_on)
+      label(for='returned_on') Returned On:
+      input(type='text' id='returned_on' value=loan.returned_on)
 
-  p='Book Title: '+loan.Book.title
-  p='Loaned By: '+loan.Patron.first_name+' '+loan.Patron.last_name
-  p='Loaned On: '+loan.loaned_on
-  p='Return By: '+loan.return_by
-  p
-    label(for='returned_on') Returned On:
-    input(type='text' id='returned_on' value=moment().format('YYYY-MM-DD'))
-
-  p
-    input(type='submit' value='Return Book')
+    p
+      input(type='submit' value='Return Book')

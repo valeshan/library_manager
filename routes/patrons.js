@@ -37,6 +37,16 @@ router.get('/all_patrons/:id', function(req, res, next){
     })
 });
 
+//UPDATE PATRON DETAIL
+
+router.post('/all_patrons/:id', function(req, res, next){
+  Patrons.findById(req.params.id).then(function(patron){
+    return  patron.update(req.body);
+  }).then(function(patron){
+    res.redirect('/all_patrons/'+patron.id)
+  })
+})
+
 //POST NEW PATRON
 
 router.post('/new_patron', function(req, res, next){

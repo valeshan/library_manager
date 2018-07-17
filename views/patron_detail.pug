@@ -2,7 +2,7 @@ extends layout
 
 block content
   h1='Patron: '+patron.first_name+ ' '+patron.last_name
-  form(method='POST' action = '/add_patron')
+  form(method='POST')
     p
       label(for='first_name') First Name
       input(type='text' name='first_name' value=patron.first_name)
