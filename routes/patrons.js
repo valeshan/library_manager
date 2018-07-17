@@ -42,7 +42,18 @@ router.get('/all_patrons/:id', function(req, res, next){
 router.post('/new_patron', function(req, res, next){
   Patrons.create(req.body).then(function(patron){
     res.redirect('all_patrons')
-  })
+  }).catch(function(err){
+      if(err.name === "SequelizeValidationError"){
+          res.render("new_patron",
+                     {patron: Patrons.build(req.body),
+                      errors: err.errors
+          });
+      } else{
+        throw err;
+      }
+    }).catch(function(err){
+      res.send(500);
+    });
 });
 
 

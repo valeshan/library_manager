@@ -71,30 +71,47 @@ router.get('/checked_loans', function(req, res, next) {
 router.post('/new_loan', function(res, req, next){
   Loans.create(req.body).then(function(loan){
     res.redirect('all_loans')
-  })
+  }).catch(function(err){
+      if(err.name === "SequelizeValidationError"){
+          res.render("new_loan",
+                     {loan: Loans.build(req.body),
+                      errors: err.errors
+          });
+      } else{
+        throw err;
+      }
+    }).catch(function(err){
+      res.send(500);
+    });
 })
 
 
 //ADD NEW LOAN
 
 router.get('/new_loan', function(req, res, next){
-  let loan = Loan.build({
-    loan_on: moment().format('ddd MMMM DD YYYY, h:mm:ss a'),
-    return_by: moment().add(7, 'days').format('ddd MMMM DD YYYY, h:mm:ss a')
+  let loan = Loans.build({
+    loaned_on: moment().format('YYYY-MM-DD'),
+    return_by: moment().add(7, 'days').format('YYYY-MM-DD')
   });
-  Books.findAll({include:[
-                     {model: Loans}
-                   ],
-                   where:
-                   {book_id:{
-                     [Op.ne]: id
-                   }
-  }).then(function(books){
+  Books.findAll().then(function(books){
     Patrons.findAll().then(function(patrons){
       res.render('new_loan', {patrons:patrons, books:books, loan: loan});
     });
   });
-})
+});
+
+// router.get('/new_loan', function(req, res, next) {
+//   let loan = Loans.build({
+//     loaned_on: moment().format('YYYY-MM-DD'),
+//     return_by: moment().add(7, 'days').format('YYYY-MM-DD')
+//   });
+//   Books.findAll().then(function(books) {
+//     let allBooks = books;
+//     Patrons.findAll().then(function(patrons) {
+//       res.render('new_loan', { books: allBooks, patrons: patrons, loan: loan});
+//     });
+//   });
+// });
 
 
 
