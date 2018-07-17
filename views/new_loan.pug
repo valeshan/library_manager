@@ -2,22 +2,22 @@ extends layout
 
 block content
   h1 New Loan
-  form(method='POST' action = '/add_book')
+  form(method='POST')
     p
       label(for='book') Book
-      select(id='book')
+      select(name='book')
         each book in books
-          option=book.title
+          option(value=book.id selected=(book.id==loan.book_id))=book.title
     p
       label(for='patron') Patron
-      select(id='patron')
+      select(name='patron')
         each patron in patrons
-          option=patron.first_name+' '+patron.last_name
+          option(value=patron.id selected=(patron.id==loan.patron_id))=patron.first_name+' '+patron.last_name
     p
       label(for='loaned_on') Loaned On:
-      input(type='text' name='loaned_on' value= moment().format('ddd MMMM DD YYYY, h:mm:ss a'))
+      input(type='text' name='loaned_on' value=loan.loaned_on)
     p
       label(for='return_by') Return By:
-      input(type='text' name='return_by' value= moment().add(7, 'days').format('ddd MMMM DD YYYY, h:mm:ss a'))
+      input(type='text' name='return_by' value=loan.return_by)
     p
       input(type='submit' value='Create New Loan')

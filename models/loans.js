@@ -19,14 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     returned_on: DataTypes.DATE,
   }, {
     timestamps: false
-  },{
-    instanceMethods:{
-      overdue: function(){
-        if(this.return_by < date('now')){
-          return this.book_id;
-        }
-      }
-    }
   });
   Loans.associate = function(models) {
     // associations can be defined here

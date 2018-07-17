@@ -3,13 +3,13 @@ const { Books, Loans, Patrons } = require('../models');
 
 const router = express.Router();
 const date = new Date();
-
+const moment = require('moment');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 
 
-//************ LOANS *************//
+//************* LOANS *************//
 
 
 //GET ALL LOANS
@@ -65,14 +65,38 @@ router.get('/checked_loans', function(req, res, next) {
   })
 });
 
+
+//POST NEW LOAN
+
+router.post('/new_loan', function(res, req, next){
+  Loans.create(req.body).then(function(loan){
+    res.redirect('all_loans')
+  })
+})
+
+
 //ADD NEW LOAN
+
 router.get('/new_loan', function(req, res, next){
-  Books.findAll().then(function(books){
+  let loan = Loan.build({
+    loan_on: moment().format('ddd MMMM DD YYYY, h:mm:ss a'),
+    return_by: moment().add(7, 'days').format('ddd MMMM DD YYYY, h:mm:ss a')
+  });
+  Books.findAll({include:[
+                     {model: Loans}
+                   ],
+                   where:
+                   {book_id:{
+                     [Op.ne]: id
+                   }
+  }).then(function(books){
     Patrons.findAll().then(function(patrons){
-      res.render('new_loan', {patrons:patrons, books:books});
+      res.render('new_loan', {patrons:patrons, books:books, loan: loan});
     });
   });
 })
+
+
 
 
 module.exports = router;

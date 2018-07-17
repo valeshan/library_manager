@@ -8,11 +8,12 @@ const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
 
-      //************ BOOKS *************//
 
+//************* BOOKS *************//
 
 
 //GET ALL BOOKS
+
 router.get('/all_books', function(req,res,err){
   Books.findAll().then(function(books){
       res.render("all_books", {books:books})
@@ -20,6 +21,7 @@ router.get('/all_books', function(req,res,err){
 });
 
 //GET OVERDUE BOOKS
+
 router.get('/overdue_books', function(req, res, next) {
     Books.findAll({
                     include:[
@@ -40,6 +42,7 @@ router.get('/overdue_books', function(req, res, next) {
 
 
 //GET CHECKED BOOKS
+
 router.get('/checked_books', function(req, res, next) {
   Books.findAll({
                   include:[
@@ -60,12 +63,14 @@ router.get('/checked_books', function(req, res, next) {
 
 
 //ADD NEW BOOK
+
 router.get('/new_book', function(req, res, next) {
   res.render('new_book', {book: Books.build()});
 });
 
 //POST NEW BOOK
-router.post('/', function(req, res,next){
+
+router.post('/new_book', function(req, res,next){
   Books.create(req.body).then(function(book){
     res.redirect('all_books');
   })
@@ -85,6 +90,7 @@ router.post('/', function(req, res,next){
 
 
 //GET BOOK DETAIL
+
 router.get('/all_books/:id', function(req, res, next) {
   Books.find({
               include: [
@@ -101,6 +107,7 @@ router.get('/all_books/:id', function(req, res, next) {
 
 
 //RETURN BOOK PAGE
+
 router.get('/return_book/:id', function(req, res, next) {
   Loans.find({
               include:[
