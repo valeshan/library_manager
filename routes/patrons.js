@@ -36,11 +36,11 @@ router.get('/all_patrons/:id', function(req, res, next){
 });
 
 //POST NEW PATRON
-router.post('/new_patron', function(req, res, next){
+router.post('/', function(req, res, next){
   Patrons.create(req.body).then(function(patron){
-    res.redirect('/all_patrons')
+    res.redirect('all_patrons')
   })
-})
+});
 
 
 //ADD NEW PATRON

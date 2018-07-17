@@ -3,7 +3,7 @@ extends layout
 block content
   h1 New Book
   include error
-  form(method='post' action = '/all_books')
+  form(method='post')
     p
       label(for='title') Title
       input(type='text' name='title' value=book.title)
