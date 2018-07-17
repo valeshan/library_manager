@@ -6,8 +6,20 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    book_id: DataTypes.INTEGER,
-    patron_id: DataTypes.INTEGER,
+    book_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: 'Book ID is required'
+        }
+      }},
+    patron_id: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: {
+          msg: 'Patron ID is required'
+        }
+      }},
     loaned_on: {
       type: DataTypes.DATE,
       validate: {
@@ -15,7 +27,13 @@ module.exports = (sequelize, DataTypes) => {
           msg: 'Loaned on date is required'
         }
       }},
-    return_by: DataTypes.DATE,
+    return_by: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: {
+          msg: 'Return by date is required'
+        }
+      }},
     returned_on: DataTypes.DATE,
   }, {
     timestamps: false

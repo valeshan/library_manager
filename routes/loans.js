@@ -81,7 +81,7 @@ router.post('/new_loan', function(res, req, next){
         throw err;
       }
     }).catch(function(err){
-      res.send(500);
+      console.log(500);
     });
 })
 
@@ -99,19 +99,6 @@ router.get('/new_loan', function(req, res, next){
     });
   });
 });
-
-// router.get('/new_loan', function(req, res, next) {
-//   let loan = Loans.build({
-//     loaned_on: moment().format('YYYY-MM-DD'),
-//     return_by: moment().add(7, 'days').format('YYYY-MM-DD')
-//   });
-//   Books.findAll().then(function(books) {
-//     let allBooks = books;
-//     Patrons.findAll().then(function(patrons) {
-//       res.render('new_loan', { books: allBooks, patrons: patrons, loan: loan});
-//     });
-//   });
-// });
 
 
 
