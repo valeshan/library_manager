@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         }
       }},
     first_published: {
-      type: DataTypes.DATEONLY},
+      type: DataTypes.INTEGER},
   }, {
     timestamps: false
   });

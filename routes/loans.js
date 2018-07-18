@@ -101,6 +101,59 @@ router.get('/new_loan', function(req, res, next){
 });
 
 
+//RETURN BOOK PAGE
+
+router.get('/return_book/:id', function(req, res, next) {
+  Loans.find({
+              include:[
+                       {model: Patrons},
+                       {model: Books}
+                     ],
+              where:
+                {id: req.params.id}
+  }).then(function(loan) {
+      loan.returned_on = moment().format('YYYY-MM-DD');
+      res.render('return_book', { loan: loan });
+  });
+});
+
+//UPDATE RETURNED BOOK
+// router.post('/return_book/:id', function(req, res, next) {
+//   Loans.findbyId(req.params.id).then(function(loan) {
+//     loan.save();
+//   }).then(function(loan){
+//     res.redirect('all_loans');
+//   }).catch(function(err){
+//     res.send(500);
+//   });
+// });
+
+
+router.post('/return_book/:id', function(req, res, next) {
+  Loans.findbyId(req.params.id).then(function(loan) {
+        loan.save().then(function(loan) {
+            res.redirect('all_loans');
+        }).catch(function(err) {
+          if(err.name === "SequelizeValidationError") {
+            Loans.findbyId(req.params.id).then(function(loan) {
+              res.render('return_book', { loan: loan });
+          });
+         } else {
+            console.log(err);
+          }
+        });
+    });
+});
+
+// router.post('/return_book/:id', (req, res) => {
+//   // const todaysDate = getDate();
+//   Loans.findById(req.params.id)
+//   Loans.update(req.body).then(() => { // Call the create ORM method on the Loans model
+//     // res.render('new_loan', { newLoanDate, ReturnDate });
+//     res.redirect('/all_loans');
+//   });
+// });
+
 
 
 module.exports = router;

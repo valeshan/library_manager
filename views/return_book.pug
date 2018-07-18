@@ -1,8 +1,9 @@
 extends layout
 
 block content
+  include error
   h1 Return Book
-  form(method='POST' action='/return_book/'+loan.id)
+  form(method='POST')
     p(value=loan.book_id)='Book Title: '+loan.Book.title
     p(value=loan.patron_id)='Loaned By: '+loan.Patron.first_name+' '+loan.Patron.last_name
     p(value=loan.loaned_on)='Loaned On: '+loan.loaned_on
