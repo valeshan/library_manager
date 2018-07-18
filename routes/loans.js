@@ -68,7 +68,7 @@ router.get('/checked_loans', function(req, res, next) {
 
 //POST NEW LOAN
 
-router.post('/new_loan', function(res, req, next){
+router.post('/new_loan', function(req, res, next){
   Loans.create(req.body).then(function(loan){
     res.redirect('all_loans')
   }).catch(function(err){
@@ -81,7 +81,7 @@ router.post('/new_loan', function(res, req, next){
         throw err;
       }
     }).catch(function(err){
-      console.log(500);
+      console.log(err);
     });
 })
 

@@ -110,7 +110,7 @@ router.post('/all_books/:id', function(req, res, next){
   Books.findById(req.params.id).then(function(book){
     return  book.update(req.body);
   }).then(function(book){
-    res.redirect('/all_books/'+book.id)
+    res.redirect('/all_books')
   })
 })
 
