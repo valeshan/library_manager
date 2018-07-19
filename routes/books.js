@@ -110,6 +110,7 @@ router.post('/all_books/:id', function(req, res, next){
   Books.findById(req.params.id).then(function(book){
     return  book.update(req.body);
   }).then(function(book){
+    console.log(book);
     res.redirect('/all_books')
   }).catch(function(err){
     if(err.name === "SequelizeValidationError"){

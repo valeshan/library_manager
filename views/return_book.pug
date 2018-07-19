@@ -7,7 +7,7 @@ block content
   p(name= 'patron_id' value=loan.patron_id)='Loaned By: '+loan.Patron.first_name+' '+loan.Patron.last_name
   p(name= 'loaned_on' value=loan.loaned_on)='Loaned On: '+loan.loaned_on
   p(name = 'return_by' value=loan.return_by)='Return By: '+loan.return_by
-  form(method='POST' action = '/all_loans')
+  form(method='POST' action = '/return_book/'+loan.id)
     p
       label(for='returned_on') Returned On:
       input(type='text' name='returned_on' value=loan.returned_on)
