@@ -2,6 +2,7 @@ extends layout
 
 block content
   h1='Book: '+book.title
+  include error
   form(method='POST')
     p
       label(for='title') Title

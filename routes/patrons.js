@@ -44,8 +44,21 @@ router.post('/all_patrons/:id', function(req, res, next){
     return  patron.update(req.body);
   }).then(function(patron){
     res.redirect('/all_patrons/'+patron.id)
-  })
+  }).catch(function(err){
+    console.log(err)
+      if(err.name === "SequelizeValidationError"){
+          res.render("patron_detail",
+                     {patron: Patrons.build(req.body),
+                      errors: err.errors
+          });
+      } else{
+        throw err;
+      }
+    }).catch(function(err){
+      res.send(err);
+    });
 })
+
 
 //POST NEW PATRON
 
@@ -53,7 +66,6 @@ router.post('/new_patron', function(req, res, next){
   Patrons.create(req.body).then(function(patron){
     res.redirect('all_patrons')
   }).catch(function(err){
-    console.log(err)
       if(err.name === "SequelizeValidationError"){
           res.render("new_patron",
                      {patron: Patrons.build(req.body),
@@ -63,7 +75,7 @@ router.post('/new_patron', function(req, res, next){
         throw err;
       }
     }).catch(function(err){
-      res.send(err);
+      res.send(500);
     });
 });
 

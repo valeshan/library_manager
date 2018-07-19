@@ -70,7 +70,7 @@ router.get('/new_book', function(req, res, next) {
 
 //POST NEW BOOK
 
-router.post('/new_book', function(req, res,next){
+router.post('/new_book', function(req, res, next){
   Books.create(req.body).then(function(book){
     res.redirect('all_books');
   }).catch(function(err){
@@ -111,7 +111,26 @@ router.post('/all_books/:id', function(req, res, next){
     return  book.update(req.body);
   }).then(function(book){
     res.redirect('/all_books')
-  })
+  }).catch(function(err){
+    if(err.name === "SequelizeValidationError"){
+        Books.find({
+                    include: [
+                    {
+                      model: Loans,
+                      include: [Patrons, Books]}
+                    ],
+                    where:
+                      {id: req.params.id}
+        }).then(function(book){
+          book.id = req.params.id;
+          res.render('book_detail/'+book.id, {book: book, errors: err.errors})
+        });
+    }else{
+      throw err;
+    }
+  }).catch(function(err){
+    res.sendStatus(500);
+  });
 })
 
 

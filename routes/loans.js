@@ -66,26 +66,6 @@ router.get('/checked_loans', function(req, res, next) {
 });
 
 
-//POST NEW LOAN
-
-router.post('/new_loan', function(req, res, next){
-  Loans.create(req.body).then(function(loan){
-    res.redirect('all_loans')
-  }).catch(function(err){
-      if(err.name === "SequelizeValidationError"){
-          res.render("new_loan",
-                     {loan: Loans.build(req.body),
-                      errors: err.errors
-          });
-      } else{
-        throw err;
-      }
-    }).catch(function(err){
-      console.log(err);
-    });
-})
-
-
 //ADD NEW LOAN
 
 router.get('/new_loan', function(req, res, next){
@@ -99,6 +79,25 @@ router.get('/new_loan', function(req, res, next){
     });
   });
 });
+
+//POST NEW LOAN
+
+router.post('/new_loan', function(req, res, next){
+  Loans.create(req.body).then(function(loan){
+    res.redirect('all_loans');
+  }).catch(function(err){
+      if(err.name === "SequelizeValidationError"){
+          res.render("new_loan",
+                     {loan: Loans.build(req.body),
+                      errors: err.errors
+          });
+      } else{
+        throw err;
+      }
+    }).catch(function(err){
+      res.send(500);
+    });
+})
 
 
 //RETURN BOOK PAGE
@@ -117,42 +116,20 @@ router.get('/return_book/:id', function(req, res, next) {
   });
 });
 
-//UPDATE RETURNED BOOK
-// router.post('/return_book/:id', function(req, res, next) {
-//   Loans.findbyId(req.params.id).then(function(loan) {
-//     loan.save();
-//   }).then(function(loan){
-//     res.redirect('all_loans');
-//   }).catch(function(err){
-//     res.send(500);
-//   });
-// });
 
+//UPDATE RETURNED BOOK
 
 router.post('/return_book/:id', function(req, res, next) {
-  Loans.findbyId(req.params.id).then(function(loan) {
-        loan.save().then(function(loan) {
-            res.redirect('all_loans');
-        }).catch(function(err) {
-          if(err.name === "SequelizeValidationError") {
-            Loans.findbyId(req.params.id).then(function(loan) {
-              res.render('return_book', { loan: loan });
-          });
-         } else {
-            console.log(err);
-          }
-        });
-    });
+  Loans.findById(req.params.id).then(function(loan){
+    console.log(loan);
+    return loan.update(req.body);
+  }).then(function(loan){
+    res.redirect('/all_loans');
+  }).catch(function(err){
+    console.log(err);
+  });
 });
 
-// router.post('/return_book/:id', (req, res) => {
-//   // const todaysDate = getDate();
-//   Loans.findById(req.params.id)
-//   Loans.update(req.body).then(() => { // Call the create ORM method on the Loans model
-//     // res.render('new_loan', { newLoanDate, ReturnDate });
-//     res.redirect('/all_loans');
-//   });
-// });
 
 
 

@@ -2,6 +2,7 @@ extends layout
 
 block content
   h1='Patron: '+patron.first_name+ ' '+patron.last_name
+  include error
   form(method='POST')
     p
       label(for='first_name') First Name
@@ -34,5 +35,6 @@ block content
         td=loan.loaned_on
         td=loan.return_by
         td=loan.returned_on
-        td
-          a(href='/return_book/'+loan.book_id class='button') Return Book
+        if !loan.returned_on
+          td
+            a(href='/return_book/'+loan.book_id class='button') Return Book

@@ -3,12 +3,12 @@ extends layout
 block content
   h1 New Loan
   include error
-  form(method='POST')
+  form(method='post')
     p
       label(for='book_id') Book
       select(name='book_id')
         each book in books
-          option(value=book.id selected=(book.id==loan.book_id))=book.title
+            option(value=book.id selected=(book.id==loan.book_id))=book.title
     p
       label(for='patron_id') Patron
       select(name='patron_id')
