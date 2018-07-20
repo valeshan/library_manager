@@ -43,12 +43,12 @@ router.post('/all_patrons/:id', function(req, res, next){
   Patrons.findById(req.params.id).then(function(patron){
     return  patron.update(req.body);
   }).then(function(patron){
-    res.redirect('/all_patrons/'+patron.id)
+    res.redirect('/all_patrons/'+patron.id);
   }).catch(function(err){
     console.log(err)
       if(err.name === "SequelizeValidationError"){
           res.render("patron_detail",
-                     {patron: Patrons.build(req.body),
+                     {patron: Patrons.update(req.body),
                       errors: err.errors
           });
       } else{

@@ -123,8 +123,8 @@ router.post('/all_books/:id', function(req, res, next){
                     where:
                       {id: req.params.id}
         }).then(function(book){
-          book.id = req.params.id;
-          res.render('book_detail/'+book.id, {book: book, errors: err.errors})
+          res.render('book_detail/'+req.params.id, {book: book.update(req.body),
+                                              errors: err.errors})
         });
     }else{
       throw err;

@@ -3,7 +3,7 @@ extends layout
 block content
   h1='Book: '+book.title
   include error
-  form(method='POST')
+  form(method='post')
     p
       label(for='title') Title
       input(type='text' name='title' value=book.title)
