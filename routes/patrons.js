@@ -47,10 +47,21 @@ router.post('/all_patrons/:id', function(req, res, next){
   }).catch(function(err){
     console.log(err)
       if(err.name === "SequelizeValidationError"){
-          res.render("patron_detail",
-                     {patron: Patrons.update(req.body),
-                      errors: err.errors
-          });
+        Patrons.find({
+          include: [
+            {
+              model: Loans,
+                include: [Books, Patrons]
+            }],
+            where:{
+              id: req.params.id
+            }
+          }).then(function(patron){
+            res.render("patron_detail",
+                       {patron: patron.update(req.body),
+                        errors: err.errors
+            });
+          })
       } else{
         throw err;
       }
