@@ -100,13 +100,10 @@ router.get('/all_books/:id', function(req, res, next) {
               where:
                 {id: req.params.id}
   }).then(function(book) {
-      console.log(book);
       res.render('book_detail', { book: book });
   });
 });
 
-
-//UPDATE BOOK DETAIL
 
 //UPDATE BOOK DETAIL
 router.post('/all_books/:id', function(req, res, next) {
@@ -144,11 +141,21 @@ router.post('/all_books/:id', function(req, res, next) {
           let book = bookDetails[0];
           let bookID = book.id; // This gives you the ID
           console.log("here's the ID:", bookID);
-          res.render('book_detail', {book: book.update(req.body), error: error.errors}); // Change this to render the correct template and change errors
+          res.render('book_detail', {
+                                      book: Books.update(req.body,{
+                                      where: {
+                                        id: req.params.id
+                                      }
+                                      }),
+                                      error: error.errors
+                                    }
+                    );
         });
       }
     });
 });
+
+
 
 // router.post('/all_books/:id', function(req, res, next){
 //   Books.findById(req.params.id).then(function(book){
