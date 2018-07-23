@@ -100,39 +100,106 @@ router.get('/all_books/:id', function(req, res, next) {
               where:
                 {id: req.params.id}
   }).then(function(book) {
+      console.log(book);
       res.render('book_detail', { book: book });
   });
 });
 
 
 //UPDATE BOOK DETAIL
-router.post('/all_books/:id', function(req, res, next){
-  Books.findById(req.params.id).then(function(book){
-    return  book.update(req.body);
-  }).then(function(book){
-    console.log(book);
-    res.redirect('/all_books')
-  }).catch(function(err){
-    if(err.name === "SequelizeValidationError"){
-        Books.find({
-                    include: [
-                    {
-                      model: Loans,
-                      include: [Patrons, Books]}
-                    ],
-                    where:
-                      {id: req.params.id}
-        }).then(function(book){
-          res.render('book_detail/'+req.params.id, {book: book.update(req.body),
-                                              errors: err.errors})
-        });
-    }else{
-      throw err;
+
+//UPDATE BOOK DETAIL
+router.post('/all_books/:id', function(req, res, next) {
+  Books.findAll({
+    where: {
+      id: req.params.id
     }
-  }).catch(function(err){
-    res.sendStatus(500);
-  });
-})
+  })
+    .then(function(book) {
+      return Books.update(req.body, {
+        where: {
+          id: req.params.id
+        }
+      }).then(() => {
+        res.redirect('/all_books');
+      });
+    })
+    .catch(function(error) {
+      if (error.name === 'SequelizeValidationError') {
+        Books.findAll({
+          where: {
+            id: req.params.id
+          },
+          include: [
+            {
+              model: Loans,
+              include: [
+                {
+                  model: Patrons
+                }
+              ]
+            }
+          ]
+        }).then(function(bookDetails) {
+          let book = bookDetails[0];
+          let bookID = book.id; // This gives you the ID
+          console.log("here's the ID:", bookID);
+          res.render('book_detail', {book: book.update(req.body), error: error.errors}); // Change this to render the correct template and change errors
+        });
+      }
+    });
+});
+
+// router.post('/all_books/:id', function(req, res, next){
+//   Books.findById(req.params.id).then(function(book){
+//     book.update(req.body)
+// 		.then(function(){
+//       res.send('/all_books')
+//     })
+// 		.catch(function(err){
+//       if(err.name === "SequelizeValidationError"){
+//           Books.find({
+//                       include: [
+//                       {
+//                         model: Loans,
+//                         include: [Patrons, Books]}
+//                       ],
+//                       where:
+//                         {id: req.params.id}
+//           }).then(function(book){
+//             res.render('book_detail/'+req.params.id,
+//   		  {book: book.update(req.body),
+//              errors: err.errors})
+//           });
+//       }else{
+//         throw err;
+//       }
+//     });
+//   }).then(function(book){
+//     console.log(book);
+//     res.redirect('/all_books')
+//   }).catch(function(err){
+//     if(err.name === "SequelizeValidationError"){
+//         Books.find({
+//                     include: [
+//                     {
+//                       model: Loans,
+//                       include: [Patrons, Books]}
+//                     ],
+//                     where:
+//                       {id: req.params.id}
+//         }).then(function(book){
+//           res.render('book_detail/'+req.params.id,
+// 		        {book: book.update(req.body),
+//            errors: err.errors})
+//         });
+//     }else{
+//       throw err;
+//     }
+//   }).catch(function(err){
+//     res.sendStatus(500);
+//   });
+// })
 
 
 

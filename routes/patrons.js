@@ -46,21 +46,12 @@ router.post('/all_patrons/:id', function(req, res, next){
     res.redirect('/all_patrons/'+patron.id);
   }).catch(function(err){
     console.log(err)
-      if(err.name === "SequelizeValidationError"){
-        Patrons.find({
-          include: [
-            {
-              model: Loans,
-                include: [Books, Patrons]
-            }],
-            where:{
-              id: req.params.id
-            }
-          }).then(function(patron){
-            res.render("patron_detail",
+      if(err.name === 'SequelizeValidationError'){
+        Patrons.findbyId(req.params.id).then(function(patron){
+            res.render('patron_detail',
                        {patron: patron.update(req.body),
-                        errors: err.errors
-            });
+                        errors: err.errors}
+                      );
           })
       } else{
         throw err;
