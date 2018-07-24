@@ -88,14 +88,14 @@ router.post('/new_loan', function(req, res, next){
   })
   .catch(function(err){
       if(err.name === "SequelizeValidationError"){
-        let loan = Loans.build();
+        let loan = Loans.build(req.body);
         Books.findAll().then(function(books){
           Patrons.findAll().then(function(patrons){
             res.render('new_loan', {patrons:patrons, books:books, loan: loan, errors: err.errors});
           });
         });
       } else{
-      console.log(err.message)
+      console.log(err)
     }
   })
 })
@@ -120,115 +120,48 @@ router.get('/return_book/:id', function(req, res, next) {
 
 //UPDATE RETURNED BOOK
 
-router.post('return_book/:id', function(req, res, next){
-  Books.find({
-    include: [
-    {
-      model: Loans,
-        include: [Patrons, Books]}
-    ],
-    where:
-      {
-        id: req.params.id
+router.post('/return_book/:id', function(req, res, next) {
+  Loans.findAll({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(function(loan) {
+      return Loans.update(req.body, {
+        where: {
+          id: req.params.id
+        }
+      }).then((loan) => {
+        res.redirect('/all_loans');
+      });
+    })
+    .catch(function(err){
+        if(err.name === "SequelizeValidationError"){
+          Books.findAll({
+            include: [
+              {model: Loans,
+              where: {id: req.params.id}},
+            ]
+          }).then(function(book){
+            Patrons.findAll({
+              include: [
+                {model: Loans,
+                where: {id: req.params.id}},
+              ]
+            }).then(function(patron){
+              Loans.findAll({
+                where:{id: req.params.id}
+            }).then(function(loan){
+              res.render('new_loan', {patrons:patron, books:book, loan: loan[0].dataValues, errors: err.errors});
+              });
+            });
+          });
+        } else{
+        console.log(err)
       }
     })
-    .then(function(book){
-      return book.update(req.body);
-  }).then(function(book){
-    res.redirect('/books');
-  }).catch(function(err){
-    if(err.name === "SequelizeValidationError") {
-      Books.find({
-        include: [
-        {
-          model: Loans,
-            include: [Patrons, Books]}
-        ],
-        where:
-          {
-            id: req.params.id
-          }
-        })
-        .then(function(book) {
-          let loans = book.Loans;
-          res.render('new_loan', { book: book, loans: loans, errors: err ? err.errors : [] });
-      });
-    } else {
-      console.log(err);
-    }
-   });
 });
 
-// router.post('/return_book/:id', function(req, res, next){
-//   Loans.findAll({
-//     where: {
-//       id: req.params.id
-//     }
-//   }).then(function(loan) {
-//       return Loans.update(req.body, {
-//         where: {
-//           id: req.params.id
-//         }
-//     }).then(() => {
-//       res.redirect('/all_loans');
-//     });
-//       }).catch(function(error) {
-//     if (error.name === 'SequelizeValidationError') {
-//       Loans.findAll({
-//         where: {
-//           id: req.params.id
-//         },
-//         include: [
-//           {model: Patron},
-//           {model: Books}
-//         ]
-//       }).then(function(loanDetails) {
-//         console.log(loanDetails[0].dataValues.id); // This gives you the ID
-//         res.render('new_loan', {loan: Loans.build(req.body), errors: error.errors}); // Change this to render the correct template and change errors
-//       });
-//     }
-//   });
-// });
-
-// router.post('/all_patrons/:id', function(req, res, next) {
-//   Patrons.findAll({
-//     where: {
-//       id: req.params.id
-//     }
-//   })
-//     .then(function(patron) {
-//       return Patrons.update(req.body, {
-//         where: {
-//           id: req.params.id
-//         }
-//       }).then(() => {
-//         res.redirect('/all_patrons');
-//       });
-//     })
-//     .catch(function(error) {
-//       if (error.name === 'SequelizeValidationError') {
-//         Patrons.findAll({
-//           where: {
-//             id: req.params.id
-//           },
-//           include: [
-//             {
-//               model: Loans,
-//               include: [
-//                 {
-//                   model: Books
-//                 }
-//               ]
-//             }
-//           ]
-//         }).then(function(patronDetails) {
-//           console.log(patronDetails[0].dataValues.id); // This gives you the ID
-//           res.render('new_patron', {patron: Patrons.build(req.body), errors: error.errors}); // Change this to render the correct template and change errors
-//         });
-//       }
-//     });
-// });
-//
 
 
 
