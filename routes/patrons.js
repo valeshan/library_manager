@@ -38,29 +38,44 @@ router.get('/all_patrons/:id', function(req, res, next){
 });
 
 //UPDATE PATRON DETAIL
-
-router.post('/all_patrons/:id', function(req, res, next){
-  Patrons.findById(req.params.id).then(function(patron){
-    return  patron.update(req.body);
-  }).then(function(patron){
-    res.redirect('/all_patrons/'+patron.id);
-  }).catch(function(err){
-    console.log(err)
-      if(err.name === 'SequelizeValidationError'){
-        Patrons.findbyId(req.params.id).then(function(patron){
-            res.render('patron_detail',
-                       {patron: patron.update(req.body),
-                        errors: err.errors}
-                      );
-          })
-      } else{
-        throw err;
+router.post('/all_patrons/:id', function(req, res, next) {
+  Patrons.findAll({
+    where: {
+      id: req.params.id
+    }
+  })
+    .then(function(patron) {
+      return Patrons.update(req.body, {
+        where: {
+          id: req.params.id
+        }
+      }).then(() => {
+        res.redirect('/all_patrons');
+      });
+    })
+    .catch(function(error) {
+      if (error.name === 'SequelizeValidationError') {
+        Patrons.findAll({
+          where: {
+            id: req.params.id
+          },
+          include: [
+            {
+              model: Loans,
+              include: [
+                {
+                  model: Books
+                }
+              ]
+            }
+          ]
+        }).then(function(patronDetails) {
+          console.log(patronDetails[0].dataValues.id); // This gives you the ID
+          res.render('new_patron', {patron: Patrons.build(req.body), errors: error.errors}); // Change this to render the correct template and change errors
+        });
       }
-    }).catch(function(err){
-      res.send(err);
     });
-})
-
+});
 
 //POST NEW PATRON
 

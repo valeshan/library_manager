@@ -1,7 +1,10 @@
 extends layout
 
 block content
-  h1 New Loan
+  if(errors)
+    h1 Missing Loan Details
+  else
+    h1 New Loan
   include error
   form(method='POST')
     p
@@ -20,5 +23,9 @@ block content
     p
       label(for='return_by') Return By:
       input(type='text' name='return_by' value=loan.return_by)
-    p
-      input(type='submit' value='Create New Loan')
+    if(errors)
+      p
+        input(type='submit' value='Update')
+    else
+      p
+        input(type='submit' value='Create New Loan')

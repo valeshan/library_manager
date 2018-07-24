@@ -1,7 +1,10 @@
 extends layout
 
 block content
-  h1 New Book
+  if(errors)
+    h1 Missing Book Details
+  else
+    h1 New Book
   include error
   form(method='post')
     p
@@ -16,5 +19,9 @@ block content
     p
       label(for='first_published') First Published
       input(type='text' name='first_published' placeholder= 'Optional' value=book.first_published)
-    p
-      input(type='submit' value='Create New Book')
+    if(errors)
+      p
+        input(type='submit' value='Update')
+    else
+      p
+        input(type='submit' value='Create New Book')

@@ -1,7 +1,10 @@
 extends layout
 
 block content
-  h1 New Patron
+  if(errors)
+    h1 Missing Patron Details
+  else
+    h1 New Patron
   include error
   form(method='POST')
     p
@@ -22,5 +25,9 @@ block content
     p
       label(for='zip_code') Zip Code
       input(type='text' name='zip_code' value=patron.zip_code)
-    p
-      input(type='submit' value='Create New Patron')
+    if(!errors)
+      p
+        input(type='submit' value='Create New Patron')
+    else
+      p
+        input(type='submit' value='Update')

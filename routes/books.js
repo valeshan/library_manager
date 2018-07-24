@@ -74,17 +74,17 @@ router.post('/new_book', function(req, res, next){
   Books.create(req.body).then(function(book){
     res.redirect('all_books');
   }).catch(function(err){
-    if(err.name === "SequelizeValidationError"){
-        res.render("new_book",
-                   {book: Books.build(req.body),
-                    errors: err.errors
-        });
-    } else{
-      throw err;
-    }
-  }).catch(function(err){
-    res.send(500);
-  });
+      if(err.name === "SequelizeValidationError"){
+          res.render("new_book",
+                     {book: Books.build(req.body),
+                      errors: err.errors
+          });
+      } else{
+        throw err;
+      }
+    }).catch(function(err){
+      res.send(500);
+    });
 });
 
 
@@ -138,18 +138,8 @@ router.post('/all_books/:id', function(req, res, next) {
             }
           ]
         }).then(function(bookDetails) {
-          let book = bookDetails[0];
-          let bookID = book.id; // This gives you the ID
-          console.log("here's the ID:", bookID);
-          res.render('book_detail', {
-                                      book: Books.update(req.body,{
-                                      where: {
-                                        id: req.params.id
-                                      }
-                                      }),
-                                      error: error.errors
-                                    }
-                    );
+          console.log(bookDetails[0].dataValues.id); // This gives you the ID
+          res.render('new_book', {book: Books.build(req.body), errors: error.errors}); // Change this to render the correct template and change errors
         });
       }
     });
